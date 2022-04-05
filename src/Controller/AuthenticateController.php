@@ -31,7 +31,7 @@ class AuthenticateController extends AbstractController
             return new JsonResponse([
                 "error" => "invalid_request",
                 "error_description" => "no code in request",
-            ]);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $result = $this->getAccessToken($data['code']);
@@ -58,7 +58,7 @@ class AuthenticateController extends AbstractController
                 "token" => $user->getToken(),
                 "user_id" => $user->getUserId()
             ]
-        ]);
+        ], Response::HTTP_OK);
     }
 
     private function getAccessToken(string $code): array|JsonResponse {
@@ -88,7 +88,7 @@ class AuthenticateController extends AbstractController
                 "status_code" => $response->getStatusCode(),
                 "error" => "invalid_request",
                 "error_description" => "Invalid item in request. (probably code)",
-            ]);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $result = json_decode($response->getContent(), true);
@@ -97,13 +97,13 @@ class AuthenticateController extends AbstractController
             return new JsonResponse([
                 "error" => "invalid_request",
                 "error_description" => "Invalid code in request.",
-            ]);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         return $result;
     }
 
-    private function getUserFromDiscordApi($access_token): array {
+    private function getUserFromDiscordApi(string $access_token): array {
         $responseUser = $this->client->request(
             "GET",
             "https://discord.com/api/v8/users/@me",
@@ -117,7 +117,7 @@ class AuthenticateController extends AbstractController
         return json_decode($responseUser->getContent(), true);
     }
 
-    private function getAndSetUpdatedUser(ManagerRegistry $doctrine, $resultUser, $result): User {
+    private function getAndSetUpdatedUser(ManagerRegistry $doctrine, array $resultUser, array $result): User {
         $entityManager = $doctrine->getManager();
         $user = $doctrine->getRepository(User::class)->findOneBy(['user_id' => $resultUser['id']]);
 
@@ -134,6 +134,7 @@ class AuthenticateController extends AbstractController
             $user->setRefreshToken($result['refresh_token']);
             $user->setTokenExpiresIn(strtotime("now") + $result['expires_in']);
         }
+
 
         $entityManager->persist($user);
         $entityManager->flush();

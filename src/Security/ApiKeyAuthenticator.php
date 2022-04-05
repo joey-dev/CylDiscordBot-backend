@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use App\Repository\UserRepository;
+use function MongoDB\BSON\toJSON;
 
 class ApiKeyAuthenticator extends AbstractAuthenticator
 {
@@ -40,9 +41,9 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException('token not found');
         }
 
-        $id = $request->headers->get('user_id');
+        $id = $request->headers->get('user-id');
         if (null === $id) {
-            throw new CustomUserMessageAuthenticationException('user_id not found');
+            throw new CustomUserMessageAuthenticationException('user-id not found');
         }
 
         $user = $this->userRepository->findOneBy(['user_id' => $id]);
