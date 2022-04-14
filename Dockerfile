@@ -14,4 +14,11 @@ RUN php -r "unlink('composer-setup.php');"
 
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
-RUN composer install
+#CMD [ "sh", "-c", "php composer.phar install" ]
+#CMD /bin/bash -c 'php composer.phar install; /bin/bash'
+
+#COPY composer.json ./
+#COPY composer.lock ./
+
+#RUN php composer.phar install
+
