@@ -36,7 +36,7 @@ class ModuleController extends AbstractController
     public function pluginPatch(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
         $entityManager = $doctrine->getManager();
 
         if (!array_key_exists("plugin_id", $data) || !array_key_exists("checked", $data)) {
@@ -87,7 +87,7 @@ class ModuleController extends AbstractController
     public function componentPatch(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
         $entityManager = $doctrine->getManager();
 
         if (!array_key_exists("component_id", $data) || !array_key_exists("checked", $data) || !array_key_exists("data", $data)) {
@@ -146,7 +146,7 @@ class ModuleController extends AbstractController
     private function getAllConfiguredModules(Request $request, ManagerRegistry $doctrine): array|JsonResponse
     {
         $modules = $this->getAllModules($doctrine);
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
 
         $user = $doctrine->getRepository(User::class)->findOneBy(['user_id' => $userId]);
         $requestedServer = null;

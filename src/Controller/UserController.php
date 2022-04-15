@@ -15,7 +15,7 @@ class UserController extends AbstractController
     public function user(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $userRepository = $doctrine->getRepository(User::class);
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
         $user = $userRepository->findOneBy(['user_id' => $userId]);
 
         return new JsonResponse([

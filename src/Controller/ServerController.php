@@ -25,7 +25,7 @@ class ServerController extends AbstractController
     #[Route('/user/servers', name: 'user_servers', methods: ["GET"])]
     public function getServers(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
 
         $servers = $this->getServersFromDiscordApi($request);
 
@@ -54,7 +54,7 @@ class ServerController extends AbstractController
     #[Route('/user/server/{id}', name: 'user_server', methods: ["GET"])]
     public function getServerWithId(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
 
         $user = $doctrine->getRepository(User::class)->findOneBy(['user_id' => $userId]);
 
@@ -92,7 +92,7 @@ class ServerController extends AbstractController
     #[Route('/user/server/{id}/roles', name: 'user_server_roles', methods: ["GET"])]
     public function getServerRolesWithId(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
 
         $user = $doctrine->getRepository(User::class)->findOneBy(['user_id' => $userId]);
 
@@ -127,7 +127,7 @@ class ServerController extends AbstractController
     #[Route('/user/server/{id}/channels', name: 'user_server_channels', methods: ["GET"])]
     public function getServerChannelsWithId(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
-        $userId = $request->headers->get('user_id');
+        $userId = $request->headers->get('user-id');
 
         $user = $doctrine->getRepository(User::class)->findOneBy(['user_id' => $userId]);
 
